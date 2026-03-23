@@ -1,14 +1,10 @@
-/// Menu tile widget for the Profile screen.
-///
-/// A tappable row with leading icon, title, optional trailing
-/// value/widget, and a forward chevron. Used for settings items,
-/// TBS Friends, Agreements, etc.
+/// Menu tile widget — dark mode aware text colors.
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/tbs_colors.dart';
 
-/// A single tappable menu item row.
 class MenuTile extends StatelessWidget {
   const MenuTile({
     super.key,
@@ -22,28 +18,13 @@ class MenuTile extends StatelessWidget {
     this.isDestructive = false,
   });
 
-  /// Leading icon.
   final IconData icon;
-
-  /// Menu item label.
   final String title;
-
-  /// Optional trailing widget (overrides trailingText).
   final Widget? trailing;
-
-  /// Optional trailing text value (e.g. "English US").
   final String? trailingText;
-
-  /// Tap callback.
   final VoidCallback? onTap;
-
-  /// Whether to show a bottom divider.
   final bool showDivider;
-
-  /// Icon color.
   final Color iconColor;
-
-  /// If true, the title renders in red (e.g. Logout).
   final bool isDestructive;
 
   @override
@@ -67,33 +48,30 @@ class MenuTile extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: isDestructive
                           ? AppColors.expense
-                          : AppColors.textPrimary,
+                          : TBSColors.textPrimary(context),
                     ),
                   ),
                 ),
-                if (trailing != null) trailing!,
+                ?trailing,
                 if (trailing == null && trailingText != null)
                   Text(
                     trailingText!,
                     style: GoogleFonts.inter(
-                      fontSize: 13,
-                      color: AppColors.textSecondary,
-                    ),
+                        fontSize: 13,
+                        color: TBSColors.textSecondary(context)),
                   ),
                 if (!isDestructive) ...[
                   const SizedBox(width: 8),
-                  const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 14,
-                    color: AppColors.textSecondary,
-                  ),
+                  Icon(Icons.arrow_forward_ios,
+                      size: 14,
+                      color: TBSColors.textSecondary(context)),
                 ],
               ],
             ),
           ),
         ),
         if (showDivider)
-          const Divider(height: 1, color: AppColors.divider),
+          Divider(height: 1, color: TBSColors.divider(context)),
       ],
     );
   }

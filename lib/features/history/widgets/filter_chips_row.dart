@@ -1,28 +1,18 @@
-/// Filter chips row widget for the History screen.
-///
-/// Displays a row of toggle-able filter chips for time range
-/// and account type. Only one chip per group can be active.
+/// Filter chips row — dark mode aware selected/unselected colors.
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/tbs_colors.dart';
 
-/// A row of single-select filter chips.
 class FilterChipsRow extends StatelessWidget {
   const FilterChipsRow({
-    super.key,
-    required this.chips,
-    required this.selectedIndex,
-    required this.onSelected,
+    super.key, required this.chips,
+    required this.selectedIndex, required this.onSelected,
   });
 
-  /// Labels for each chip.
   final List<String> chips;
-
-  /// Currently selected chip index.
   final int selectedIndex;
-
-  /// Callback when a chip is tapped.
   final ValueChanged<int> onSelected;
 
   @override
@@ -32,7 +22,7 @@ class FilterChipsRow extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: chips.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
           final isSelected = index == selectedIndex;
           return GestureDetector(
@@ -40,21 +30,16 @@ class FilterChipsRow extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.accent : AppColors.surfaceCard,
+                color: isSelected ? AppColors.accent : TBSColors.cardAlt(context),
                 borderRadius: BorderRadius.circular(20),
-                border: isSelected
-                    ? null
-                    : Border.all(color: AppColors.divider),
+                border: isSelected ? null
+                    : Border.all(color: TBSColors.divider(context)),
               ),
               alignment: Alignment.center,
-              child: Text(
-                chips[index],
-                style: GoogleFonts.inter(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: isSelected ? Colors.white : AppColors.textSecondary,
-                ),
-              ),
+              child: Text(chips[index], style: GoogleFonts.inter(
+                  fontSize: 12, fontWeight: FontWeight.w500,
+                  color: isSelected ? Colors.white
+                      : TBSColors.textSecondary(context))),
             ),
           );
         },

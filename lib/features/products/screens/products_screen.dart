@@ -1,38 +1,34 @@
-/// Products screen for the TBS Bank app.
-///
-/// Displays the featured Platinum Visa banner, High-Yield Savings,
-/// Personal Loans, Digital Assets crypto section, and Insurance & More grid.
+/// Products screen — dark mode aware and localized.
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/tbs_colors.dart';
+import '../../../core/l10n/app_localizations.dart';
 import '../widgets/featured_card_banner.dart';
 import '../widgets/product_tile.dart';
 import '../widgets/crypto_section.dart';
 import '../widgets/insurance_grid.dart';
 
-/// Products tab screen — financial products and offerings.
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
 
   void _showComingSoon(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Coming soon!',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w500),
-        ),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: AppColors.primary,
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    final l10n = AppLocalizations.of(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(l10n.comingSoon,
+          style: GoogleFonts.inter(fontWeight: FontWeight.w500)),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: AppColors.primary,
+      duration: const Duration(seconds: 2),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: AppColors.surfaceCard,
+      backgroundColor: TBSColors.background(context),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -40,93 +36,54 @@ class ProductsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-              // App bar row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'TBS Bank',
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
+                  Text(l10n.appName, style: GoogleFonts.inter(
+                      fontSize: 18, fontWeight: FontWeight.w700,
+                      color: TBSColors.textPrimary(context))),
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: 40, height: 40,
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.05),
-                          blurRadius: 8,
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.notifications_outlined,
-                      color: AppColors.textPrimary,
-                      size: 20,
-                    ),
+                        color: TBSColors.card(context), shape: BoxShape.circle,
+                        boxShadow: [BoxShadow(
+                            color: TBSColors.shadow(context), blurRadius: 8)]),
+                    child: Icon(Icons.notifications_outlined,
+                        color: TBSColors.textPrimary(context), size: 20),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-              // Page title
-              Text(
-                'Products',
-                style: GoogleFonts.inter(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
-                ),
-              ),
+              Text(l10n.products, style: GoogleFonts.inter(
+                  fontSize: 28, fontWeight: FontWeight.w700,
+                  color: TBSColors.textPrimary(context))),
               const SizedBox(height: 4),
-              Text(
-                'Making it simpler with financial tools built around your lifestyle.',
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                ),
-              ),
+              Text('Making it simpler with financial tools built around your lifestyle.',
+                  style: GoogleFonts.inter(fontSize: 14,
+                      color: TBSColors.textSecondary(context), height: 1.4)),
               const SizedBox(height: 24),
-              // Featured card
               const FeaturedCardBanner(),
               const SizedBox(height: 16),
-              // High-Yield Savings
               ProductTile(
-                icon: Icons.savings_outlined,
-                iconColor: AppColors.accent,
-                title: 'High-Yield Savings',
-                subtitle:
-                    'Grow your savings at 4.5% APY with no minimum balance and no fees to go with it.',
-                highlightValue: '4.5%',
-                highlightLabel: 'APY',
+                icon: Icons.savings_outlined, iconColor: AppColors.accent,
+                title: l10n.highYieldSavings,
+                subtitle: l10n.highYieldSavingsDesc,
+                highlightValue: '4.5%', highlightLabel: 'APY',
                 onTap: () => _showComingSoon(context),
               ),
               const SizedBox(height: 16),
-              // Personal Loans
               ProductTile(
                 icon: Icons.account_balance_outlined,
                 iconColor: AppColors.accentBlue,
-                title: 'Personal Loans',
-                subtitle:
-                    'Instant approval for values up to \$50,000 with competitive fixed rates.',
-                highlightValue: '5.9%',
-                highlightLabel: 'APR',
+                title: l10n.personalLoansProduct,
+                subtitle: l10n.personalLoansProductDesc,
+                highlightValue: '5.9%', highlightLabel: 'APR',
                 onTap: () => _showComingSoon(context),
               ),
               const SizedBox(height: 16),
-              // Digital Assets / Crypto
-              CryptoSection(
-                onExplore: () => _showComingSoon(context),
-              ),
+              CryptoSection(onExplore: () => _showComingSoon(context)),
               const SizedBox(height: 24),
-              // Insurance & More grid
-              const InsuranceGrid(),
+              InsuranceGrid(l10n: l10n),
               const SizedBox(height: 32),
             ],
           ),

@@ -1,10 +1,11 @@
 /// Main navigation shell for the TBS Bank app.
 ///
 /// Uses [IndexedStack] with a [BottomNavigationBar] to preserve
-/// scroll state across tabs. Four tabs: Home, Payments, History, Profile.
+/// scroll state across tabs. Tab labels are localized.
 import 'package:flutter/material.dart';
 
 import '../core/theme/app_colors.dart';
+import '../core/l10n/app_localizations.dart';
 import '../features/home/screens/home_screen.dart';
 import '../features/products/screens/products_screen.dart';
 import '../features/history/screens/history_screen.dart';
@@ -21,36 +22,28 @@ class MainNavigation extends StatefulWidget {
 class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
 
-  /// The four main screens preserved via IndexedStack.
-  final List<Widget> _screens = const [
+  static const List<Widget> _screens = [
     HomeScreen(),
     ProductsScreen(),
     HistoryScreen(),
     ProfileScreen(),
   ];
 
-  void _onTabTapped(int index) {
-    setState(() => _currentIndex = index);
-  }
-
-  /// Allows child widgets to switch tabs programmatically (e.g. logout → Home).
-  void switchToTab(int index) {
-    setState(() => _currentIndex = index);
-  }
+  void _onTabTapped(int index) => setState(() => _currentIndex = index);
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: isDark ? const Color(0xFF161626) : AppColors.surface,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -59,33 +52,34 @@ class _MainNavigationState extends State<MainNavigation> {
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: _onTabTapped,
-          backgroundColor: AppColors.surface,
-          selectedItemColor: AppColors.primary,
+          backgroundColor: isDark ? const Color(0xFF161626) : AppColors.surface,
+          selectedItemColor:
+              isDark ? AppColors.accent : AppColors.primary,
           unselectedItemColor: AppColors.textSecondary,
           type: BottomNavigationBarType.fixed,
           elevation: 0,
           selectedFontSize: 12,
           unselectedFontSize: 12,
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'Home',
+              icon: const Icon(Icons.home_outlined),
+              activeIcon: const Icon(Icons.home),
+              label: l10n.home,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.payment_outlined),
-              activeIcon: Icon(Icons.payment),
-              label: 'Payments',
+              icon: const Icon(Icons.payment_outlined),
+              activeIcon: const Icon(Icons.payment),
+              label: l10n.payments,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              activeIcon: Icon(Icons.history),
-              label: 'History',
+              icon: const Icon(Icons.history),
+              activeIcon: const Icon(Icons.history),
+              label: l10n.history,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
-              label: 'Profile',
+              icon: const Icon(Icons.person_outline),
+              activeIcon: const Icon(Icons.person),
+              label: l10n.profile,
             ),
           ],
         ),

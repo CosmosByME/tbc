@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/l10n/app_localizations.dart';
 
 /// Large featured product banner for The Platinum Visa.
 class FeaturedCardBanner extends StatelessWidget {
@@ -13,6 +14,7 @@ class FeaturedCardBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -39,7 +41,7 @@ class FeaturedCardBanner extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  'FEATURED',
+                  l10n.featured,
                   style: GoogleFonts.inter(
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
@@ -62,7 +64,7 @@ class FeaturedCardBanner extends StatelessWidget {
           const SizedBox(height: 24),
           // Title
           Text(
-            'The Platinum\nVisa',
+            l10n.platinumVisaTitle,
             style: GoogleFonts.inter(
               fontSize: 32,
               fontWeight: FontWeight.w700,
@@ -73,7 +75,7 @@ class FeaturedCardBanner extends StatelessWidget {
           const SizedBox(height: 12),
           // Description
           Text(
-            'Unlimited rewards and premium travel insurance with zero annual fee for the first year.',
+            l10n.platinumVisaDesc,
             style: GoogleFonts.inter(
               fontSize: 13,
               color: Colors.white70,
