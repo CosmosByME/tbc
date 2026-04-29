@@ -21,7 +21,7 @@ class SpecialOffersCarousel extends StatelessWidget {
                 color: TBSColors.textPrimary(context))),
         const SizedBox(height: 12),
         SizedBox(
-          height: 160,
+          height: 200,
           child: ListView(
             scrollDirection: Axis.horizontal,
             clipBehavior: Clip.none,
@@ -45,7 +45,7 @@ class _OsmonCardOffer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 260,
+      width: 280,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(

@@ -14,7 +14,7 @@ class MenuTile extends StatelessWidget {
     this.trailingText,
     this.onTap,
     this.showDivider = true,
-    this.iconColor = AppColors.textPrimary,
+    this.iconColor,
     this.isDestructive = false,
   });
 
@@ -24,11 +24,14 @@ class MenuTile extends StatelessWidget {
   final String? trailingText;
   final VoidCallback? onTap;
   final bool showDivider;
-  final Color iconColor;
+  final Color? iconColor;
   final bool isDestructive;
 
   @override
   Widget build(BuildContext context) {
+    final effectiveIconColor = iconColor ??
+        (isDestructive ? AppColors.expense : TBSColors.textPrimary(context));
+
     return Column(
       children: [
         InkWell(
@@ -38,7 +41,7 @@ class MenuTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 14),
             child: Row(
               children: [
-                Icon(icon, color: iconColor, size: 22),
+                Icon(icon, color: effectiveIconColor, size: 22),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Text(

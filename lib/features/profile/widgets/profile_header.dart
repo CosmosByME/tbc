@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/tbs_colors.dart';
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../core/state/app_state.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
@@ -12,6 +13,7 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final userName = AppState.of(context).userName ?? 'Alexander Bennett';
     return Column(
       children: [
         Container(
@@ -23,10 +25,10 @@ class ProfileHeader extends StatelessWidget {
             border: Border.all(color: AppColors.accent, width: 2),
           ),
           child: Icon(Icons.person, size: 40,
-              color: TBSColors.textSecondary(context)),
+              color: TBSColors.textPrimary(context)),
         ),
         const SizedBox(height: 14),
-        Text('Alexander Bennett',
+        Text(userName,
             style: GoogleFonts.inter(
                 fontSize: 22,
                 fontWeight: FontWeight.w700,

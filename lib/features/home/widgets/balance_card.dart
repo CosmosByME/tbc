@@ -6,35 +6,39 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/l10n/app_localizations.dart';
 
 /// Dark navy card showing account balance with visibility toggle.
-class BalanceCard extends StatefulWidget {
-  const BalanceCard({super.key});
+class BalanceCard extends StatelessWidget {
+  final String balance;
+  final String cardNumber;
+  final String cardType;
+  final String label;
+  final Color? color;
+  final bool isVisible;
+  final VoidCallback? onToggleVisibility;
 
-  @override
-  State<BalanceCard> createState() => _BalanceCardState();
-}
-
-class _BalanceCardState extends State<BalanceCard> {
-  bool _isBalanceVisible = false;
-
-  void _toggleVisibility() {
-    setState(() => _isBalanceVisible = !_isBalanceVisible);
-  }
+  const BalanceCard({
+    super.key,
+    required this.balance,
+    required this.cardNumber,
+    required this.cardType,
+    required this.label,
+    this.color,
+    this.isVisible = true,
+    this.onToggleVisibility,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(20),
+        color: color ?? AppColors.primary,
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.3),
+            color: (color ?? AppColors.primary).withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -43,12 +47,12 @@ class _BalanceCardState extends State<BalanceCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top row: "Your balance" + TBS PREMIER badge
+          // Top row: Label + TBS PREMIER badge (if applicable)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                l10n.yourBalance,
+                label,
                 style: GoogleFonts.inter(
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
@@ -81,25 +85,27 @@ class _BalanceCardState extends State<BalanceCard> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                _isBalanceVisible ? '\$12,9,450.00' : '●●●● ●●●● 9,450',
-                style: GoogleFonts.inter(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+              Expanded(
+                child: Text(
+                  isVisible ? balance : '*****',
+                  style: GoogleFonts.inter(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               const SizedBox(width: 12),
-              GestureDetector(
-                onTap: _toggleVisibility,
-                child: Icon(
-                  _isBalanceVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                  color: Colors.white.withValues(alpha: 0.6),
-                  size: 22,
+              if (onToggleVisibility != null)
+                GestureDetector(
+                  onTap: onToggleVisibility,
+                  child: Icon(
+                    isVisible ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.white.withValues(alpha: 0.6),
+                    size: 22,
+                  ),
                 ),
-              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -107,13 +113,10 @@ class _BalanceCardState extends State<BalanceCard> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   children: [
@@ -122,24 +125,25 @@ class _BalanceCardState extends State<BalanceCard> {
                       color: Colors.white70,
                       size: 14,
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 8),
                     Text(
-                      '**** 4482',
+                      cardNumber,
                       style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: Colors.white70,
+                        fontSize: 13,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
               ),
               const Spacer(),
-              // Mini VISA logo placeholder
+              // Card Type logo text
               Text(
-                'VISA',
+                cardType,
                 style: GoogleFonts.inter(
                   fontSize: 14,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w800,
                   color: Colors.white.withValues(alpha: 0.6),
                   letterSpacing: 2,
                 ),

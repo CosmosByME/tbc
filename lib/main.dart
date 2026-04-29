@@ -11,6 +11,7 @@ import 'core/theme/app_theme.dart';
 import 'core/notifiers/app_notifier.dart';
 import 'core/state/app_state.dart';
 import 'core/l10n/app_localizations.dart';
+import 'features/welcome/screens/language_selection_screen.dart';
 import 'navigation/main_navigation.dart';
 
 void main() {
@@ -67,7 +68,9 @@ class _TBSBankAppState extends State<TBSBankApp> {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          home: const MainNavigation(),
+          home: _notifier.userName == null 
+              ? const LanguageSelectionScreen() 
+              : const MainNavigation(),
         ),
       ),
     );
